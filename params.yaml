@@ -1,1 +1,14 @@
-key: value
+# key: value
+# """ to create model we need parameters
+# such as image size,  batch size, epoch size, 
+# classes, learning rate and so on """
+
+AUGMENTATION: TRUE
+# as per the VGG 16 model
+IMAGE_SIZE : [244,244,3] 
+BATCH_SIZE: 16
+INCLUDE_TOP: FALSE #to get the pretrain model
+EPOCHS: 1
+CLASSES: 2  #only two classed i.e two disease
+WEIGHTS: imagenet
+LEARNING_RATE: 0.01
