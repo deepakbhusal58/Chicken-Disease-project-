@@ -1,10 +1,12 @@
 from cnnClassifier.constants import *
 import os
+from pathlib import Path
 from cnnClassifier.utils.common import read_yaml,create_directories
 from cnnClassifier.entity.config_entity import (DataIngestionConfig,
                                                 PrepareBaseModelConfig,
                                                 PrepareCallbacksConfig,
-                                                TrainingConfig)
+                                                TrainingConfig,
+                                                EvaluationConfig)
 
 class ConfigurationManager:
     def __init__(
@@ -13,6 +15,20 @@ class ConfigurationManager:
         params_filepath = PARAMS_FILE_PATH):
 
         self.config = read_yaml(config_filepath)
+        # A YAML document as a string
+        # yaml_string = """
+        # name: John Doe
+        # age: 30
+        # city: New York
+        # """
+
+        # # Parse the YAML string into a Python data structure (dictionary in this case)
+        # data = yaml.safe_load(yaml_string)
+
+        # # Access values from the parsed data
+        # print(data['name'])  # Output: John Doe
+        # print(data['age'])   # Output: 30
+        # print(data['city'])  # Output: New York
         self.params = read_yaml(params_filepath)
 
         create_directories([self.config.artifacts_root],verbose=True)  
@@ -95,4 +111,16 @@ class ConfigurationManager:
             params_image_size=params.IMAGE_SIZE
         )
         return training_config
-       
+
+
+
+    def get_validation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model=Path("artifacts/training/model.h5"),
+            training_data=Path("artifacts/data_ingestion/Chicken-fecal-images"),
+            all_params=self.params,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE
+        )
+
+        return eval_config      

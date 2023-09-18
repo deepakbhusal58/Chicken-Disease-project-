@@ -45,6 +45,7 @@ class PrepareBaseModel:
         )
 
         full_model.summary()
+        
         return full_model
     
 
